@@ -1,0 +1,6 @@
+# Ignore compiled object files
+*.o
+obj_dir/
+
+# Ignore executable file
+main
