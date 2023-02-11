@@ -1,20 +1,22 @@
 CC = g++
 CFLAGS = -g -Wall
-RELEASE_FLAGS = -O2
+OPTIMIZATION_FLAGS = -O2
 LIBS = -lncurses
 SRC = main.cpp
 EXEC = main
+SDL2-CFLAGS := $(shell sdl2-config --cflags)
+SDL2-LIBS := $(shell sdl2-config --libs)
 
 .PHONY: all
 all: $(EXEC)
 
-.PHONY: release
-release: CFLAGS += $(RELEASE_FLAGS)
-release: $(EXEC)
+.PHONY: optimized
+optimized: CFLAGS += $(OPTIMIZATION_FLAGS)
+optimized: $(EXEC)
 
 $(EXEC): $(SRC)
 	@echo "CC $(SRC) > $(EXEC)"
-	@$(CC) $(CFLAGS) $(SRC) -o $(EXEC) $(LIBS)
+	@$(CC) $(CFLAGS) $(SDL2-CFLAGS) $(SRC) -o $(EXEC) $(LIBS) $(SDL2-LIBS)
 	@echo "Done"
 
 .PHONY: clean

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <curses.h>
 #include <ncurses.h>
+#include <SDL.h>
+#include "SDL_video.h"
 #include "tracks.cpp"
 
 using namespace std;
@@ -10,9 +12,31 @@ void destroy_win(WINDOW *local_win);
 void redraw_listing(WINDOW *local_win, song *index, int count);
 void draw_highlighted(WINDOW *local_win, int width, int y, int x, string text);
 
+const int SCREEN_WIDTH = 1200;
+const int SCREEN_HEIGHT = 800;
+
 int main(int argc, char *argv[]) {
 	WINDOW *window_one;
 	WINDOW *window_two;
+
+	SDL_Window *window = NULL;
+	SDL_Surface *screenSurface = NULL;
+
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << endl;
+	} else {
+		window = SDL_CreateWindow("Rendered Output", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		if (window == NULL) {
+			cout << "Window could not be created! SDL_Error: " << SDL_GetError() << endl;
+		} else {
+			screenSurface = SDL_GetWindowSurface(window);
+			SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
+			SDL_UpdateWindowSurface(window);
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+			//SDL_Event e; bool quit = false; while(quit == false){ while(SDL_PollEvent( &e )){if(e.type == SDL_QUIT) quit = true;}}
+		}
+	}
+
 	create_track_data();
 	int position = 0;
 
@@ -60,6 +84,8 @@ int main(int argc, char *argv[]) {
 					wrefresh(window_one);
 				}
 				break;
+			case 10:
+			case 32:
 			case KEY_DOWN:
 				if (position < (int)sizeof(index) / (int)sizeof(index[0]) - 1) {
 					position++;
