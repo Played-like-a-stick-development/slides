@@ -14,6 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: instpackages
-      run: sudo apt-get install libncurses5-dev libncursesw5-dev libsdl2-2.0-0 libsdl2-ttf-2.0-0 
+      run: sudo apt-get install libncurses5-dev libncursesw5-dev libsdl2-2.0-0 libsdl2-ttf-2.0-0 SDL2-devel
     - name: make
       run: make
