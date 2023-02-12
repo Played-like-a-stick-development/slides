@@ -5,7 +5,7 @@ LIBS = -lncurses
 SRC = main.cpp
 EXEC = main
 SDL2-CFLAGS := $(shell sdl2-config --cflags)
-SDL2-LIBS := $(shell sdl2-config --libs)
+SDL2-LIBS := $(shell sdl2-config --libs) -lSDL2_ttf
 
 .PHONY: all
 all: $(EXEC)
@@ -22,5 +22,5 @@ $(EXEC): $(SRC)
 .PHONY: clean
 clean:
 	@echo "Cleaning directory"
-	@rm -rf $(EXEC)
+	@rm -rf $(EXEC) *:Zone.Identifier
 	@echo "Done"

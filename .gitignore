@@ -4,3 +4,6 @@ obj_dir/
 
 # Ignore executable file
 main
+
+# Ignore computed assets
+*:Zone.Identifier
