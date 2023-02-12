@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: [-I/usr/local/include/SDL2]
+  Add: [-I/usr/include/SDL2]

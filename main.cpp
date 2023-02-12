@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 			//screenSurface = SDL_GetWindowSurface(window);
 			screenRenderer = SDL_CreateRenderer(window, -1, 0);
 			draw_screen(window, screenRenderer, font, title_font, small_font, "test", "test", "test", "test", "test", "test"); 	
-			//SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 			//SDL_Event e; bool quit = false; while(quit == false){ while(SDL_PollEvent( &e )){if(e.type == SDL_QUIT) quit = true;}}
 		}
 	}
@@ -85,7 +85,12 @@ int main(int argc, char *argv[]) {
 	wprintw(window_two, "%s", message.c_str());
 	wrefresh(window_two);
 
-	while((ch = getch()) != KEY_F(1)) {
+	SDL_Event e;
+	bool quit = false;
+	while(quit == false && (ch = getch()) != KEY_F(1)){
+		while(SDL_PollEvent(&e)) {
+			if(e.type == SDL_QUIT){quit = true;}
+		}
 		switch(ch) 
 		{
 			case KEY_UP:
@@ -120,11 +125,10 @@ int main(int argc, char *argv[]) {
 				break;
 		}
 	}
-
 	endwin();
 	SDL_Quit();
 
-	raise(9);
+	//raise(9);
 	return 0;
 }
 
