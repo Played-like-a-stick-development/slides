@@ -4,3 +4,4 @@ This program is under development, this file will be completed once it has some 
 - ncurses
 - GNU Make
 - GNU Compiler Collection
+- SDL2
