@@ -1,10 +1,9 @@
 #include <iostream>
 #include <curses.h>
 #include <ncurses.h>
+#include <signal.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
-#include "SDL_render.h"
-#include "SDL_video.h"
 #include "tracks.cpp"
 
 using namespace std;
@@ -52,7 +51,7 @@ int main(int argc, char *argv[]) {
 	create_track_data();
 	int position = 0;
 
-	song index[] = {track_one, track_two, track_three};
+	song index[] = {track_one, track_two, track_three, track_four, track_five, track_six, track_seven, track_eight};
 
 	int ch;
 
@@ -124,6 +123,8 @@ int main(int argc, char *argv[]) {
 
 	endwin();
 	SDL_Quit();
+
+	raise(9);
 	return 0;
 }
 
