@@ -7,3 +7,6 @@ main
 
 # Ignore computed assets
 *:Zone.Identifier
+
+# Ignore SDL
+SDL*/

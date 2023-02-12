@@ -14,6 +14,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: instpackages
-      run: sudo apt-get install libncurses5-dev libncursesw5-dev
+      run: sudo apt-get install libncurses5-dev libncursesw5-dev git
+    - name: instSDL
+      run: git clone https://github.com/libsdl-org/SDL.git -b SDL2
+      run: cd SDL
+      run: mkdir build
+      run: cd build
+      run: ../configure
+      run: make
+      run: sudo make install
     - name: make
       run: make
