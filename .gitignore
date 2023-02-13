@@ -5,8 +5,12 @@ obj_dir/
 # Ignore executable file
 main
 
+# Ignore .clangd needed for some IDEs
+.clangd
+
 # Ignore computed assets
 *:Zone.Identifier
 
 # Ignore SDL
 SDL*/
+logs/

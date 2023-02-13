@@ -12,8 +12,8 @@ WINDOW *create_newwin(int height, int width, int starty, int startx, bool border
 void destroy_win(WINDOW *local_win);
 void redraw_listing(WINDOW *local_win, song *index, int count);
 void draw_highlighted(WINDOW *local_win, int width, int y, int x, string text);
-void draw_screen(SDL_Window *window, SDL_Renderer *screenRenderer, TTF_Font *font, TTF_Font *title_font, TTF_Font *small_font, string title, string artist, string performers, string next_title, string next_artist, string next_performers);
-void draw_screen(SDL_Window *window, SDL_Renderer *screenRenderer, TTF_Font *font, TTF_Font *title_font, string title, string artist, string performers);
+void draw_screen(SDL_Window *window, SDL_Renderer *screenRenderer, SDL_Surface *image, TTF_Font *font, TTF_Font *title_font, TTF_Font *small_font, string title, string artist, string performers, string next_title, string next_artist, string next_performers);
+void draw_screen(SDL_Window *window, SDL_Renderer *screenRenderer, SDL_Surface *image, TTF_Font *font, TTF_Font *title_font, string title, string artist, string performers);
 
 const int SCREEN_WIDTH = 1200;
 const int SCREEN_HEIGHT = 800;
@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
 	SDL_Window *window = NULL;
 	//SDL_Surface *screenSurface = NULL;
 	SDL_Renderer *screenRenderer = NULL;
+	SDL_Surface *image = NULL;
 	TTF_Font *font = NULL;
 	TTF_Font *title_font = NULL;
 	TTF_Font *small_font = NULL;
@@ -33,16 +34,17 @@ int main(int argc, char *argv[]) {
 		cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << endl;
 	} else {
 		TTF_Init();
-		font = TTF_OpenFont("weezerfont.ttf", 67);
-		title_font = TTF_OpenFont("arial.ttf", 67);
-		small_font = TTF_OpenFont("arial.ttf", 21);
+		font = TTF_OpenFont("assets/weezerfont.ttf", 67);
+		title_font = TTF_OpenFont("assets/arial.ttf", 67);
+		small_font = TTF_OpenFont("assets/arial.ttf", 21);
+		image = SDL_LoadBMP("assets/bg.bmp");
 		window = SDL_CreateWindow("Rendered Output", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (window == NULL) {
 			cout << "Window could not be created! SDL_Error: " << SDL_GetError() << endl;
 		} else {
 			//screenSurface = SDL_GetWindowSurface(window);
 			screenRenderer = SDL_CreateRenderer(window, -1, 0);
-			draw_screen(window, screenRenderer, font, title_font, small_font, "test", "test", "test", "test", "test", "test"); 	
+			draw_screen(window, screenRenderer, image, font, title_font, small_font, "test", "test", "test", "test", "test", "test"); 	
 			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 			//SDL_Event e; bool quit = false; while(quit == false){ while(SDL_PollEvent( &e )){if(e.type == SDL_QUIT) quit = true;}}
 		}
@@ -79,7 +81,7 @@ int main(int argc, char *argv[]) {
 	draw_highlighted(window_one, COLS / 2, position, 0, "> " + index[position].name + " by " + index[position].artist + " performed by " + index[position].performers);
 	wrefresh(window_one);
 
-	draw_screen(window, screenRenderer, font, title_font, small_font, index[position].name, index[position].artist, index[position].performers, index[position + 1].name, index[position + 1].artist , index[position + 1].performers);
+	draw_screen(window, screenRenderer, image, font, title_font, small_font, index[position].name, index[position].artist, index[position].performers, index[position + 1].name, index[position + 1].artist , index[position + 1].performers);
 
 	wmove(window_two, LINES / 2, COLS / 4 - (message.size() / 2));
 	wprintw(window_two, "%s", message.c_str());
@@ -101,9 +103,9 @@ int main(int argc, char *argv[]) {
 					draw_highlighted(window_one, COLS / 2, position, 0, "> " + index[position].name + " by " + index[position].artist + " performed by " + index[position].performers);
 					wrefresh(window_one);
 					if(position != (int)sizeof(index) / (int)sizeof(index[0]) - 1) {
-					        draw_screen(window, screenRenderer, font, title_font, small_font, index[position].name, index[position].artist, index[position].performers, index[position + 1].name, index[position + 1].artist , index[position + 1].performers);
+					        draw_screen(window, screenRenderer, image, font, title_font, small_font, index[position].name, index[position].artist, index[position].performers, index[position + 1].name, index[position + 1].artist , index[position + 1].performers);
 					} else {
-					        draw_screen(window, screenRenderer, font, title_font, index[position].name, index[position].artist, index[position].performers);
+					        draw_screen(window, screenRenderer, image, font, title_font, index[position].name, index[position].artist, index[position].performers);
 					}
 				}
 				break;
@@ -117,9 +119,9 @@ int main(int argc, char *argv[]) {
 					draw_highlighted(window_one, COLS / 2, position, 0, "> " + index[position].name + " by " + index[position].artist + " performed by " + index[position].performers);
 					wrefresh(window_one);
 					if(position != (int)sizeof(index) / (int)sizeof(index[0]) - 1) {
-					        draw_screen(window, screenRenderer, font, title_font, small_font, index[position].name, index[position].artist, index[position].performers, index[position + 1].name, index[position + 1].artist , index[position + 1].performers);
+					        draw_screen(window, screenRenderer, image, font, title_font, small_font, index[position].name, index[position].artist, index[position].performers, index[position + 1].name, index[position + 1].artist , index[position + 1].performers);
 					} else {
-					        draw_screen(window, screenRenderer, font, title_font, index[position].name, index[position].artist, index[position].performers);
+					        draw_screen(window, screenRenderer, image, font, title_font, index[position].name, index[position].artist, index[position].performers);
 					}
 				}
 				break;
@@ -151,8 +153,7 @@ void draw_highlighted(WINDOW *local_win, int width, int y, int x, string text) {
 	wattroff(local_win, COLOR_PAIR(2));
 }
 
-void draw_screen(SDL_Window *window, SDL_Renderer *screenRenderer, TTF_Font *font, TTF_Font *title_font, string title, string artist, string performers) {
-	SDL_Surface *image = SDL_LoadBMP("bg.bmp");
+void draw_screen(SDL_Window *window, SDL_Renderer *screenRenderer, SDL_Surface *image, TTF_Font *font, TTF_Font *title_font, string title, string artist, string performers) {
 	SDL_Texture *background = SDL_CreateTextureFromSurface(screenRenderer, image);
 	SDL_Color color = {0, 0, 0};
 	SDL_Surface *surface = TTF_RenderText_Blended_Wrapped(title_font, title.c_str(), color, 1100);
@@ -183,8 +184,7 @@ void draw_screen(SDL_Window *window, SDL_Renderer *screenRenderer, TTF_Font *fon
 	SDL_UpdateWindowSurface(window);
 }
 
-void draw_screen(SDL_Window *window, SDL_Renderer *screenRenderer, TTF_Font *font, TTF_Font *title_font, TTF_Font *small_font, string title, string artist, string performers, string next_title, string next_artist, string next_performers) {
-	SDL_Surface *image = SDL_LoadBMP("bg.bmp");
+void draw_screen(SDL_Window *window, SDL_Renderer *screenRenderer, SDL_Surface *image, TTF_Font *font, TTF_Font *title_font, TTF_Font *small_font, string title, string artist, string performers, string next_title, string next_artist, string next_performers) {
 	SDL_Texture *background = SDL_CreateTextureFromSurface(screenRenderer, image);
 	SDL_Color color = {0, 0, 0};
 	SDL_Surface *surface = TTF_RenderText_Blended_Wrapped(title_font, title.c_str(), color, 1100);
