@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: instpackages
-      run: sudo apt-get install -y docker
+      run: sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     - name: build image
       run: docker build -t bigcig134/slides:latest .
     - name: Push image to docker hub
