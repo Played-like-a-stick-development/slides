@@ -1,6 +1,7 @@
 project('slides', 'cpp',
         version: '1.0.0',
-        default_options: 'default_library=static')
+        default_options: 'default_library=static',
+        meson_version: '>=0.56.0')
 
 sdl2_dep = dependency('sdl2')
 sdl2_ttf_dep = dependency('SDL2_ttf')
