@@ -4,6 +4,7 @@ obj_dir/
 
 # Ignore executable file
 main
+builddir/
 
 # Ignore .clangd needed for some IDEs
 .clangd
