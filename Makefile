@@ -16,10 +16,11 @@ all: $(SRC)
 setup: $(SRC)
 	@echo "Create Meson Project"
 	@meson setup builddir
+	@cp builddir/main main
 
 .PHONY: run
-run: builddir/main
-	@builddir/main
+run: main
+	@./main
 
 .PHONY: make
 make: $(EXEC)
@@ -27,10 +28,6 @@ make: $(EXEC)
 .PHONY: make-optimized
 make-optimized: CFLAGS += $(OPTIMIZATION_FLAGS)
 make-optimized: $(EXEC)
-
-.PHONY: make-run
-make-run:
-	./main
 
 $(EXEC): $(SRC)
 	@echo "CC $(SRC) > $(EXEC)"
