@@ -9,12 +9,12 @@ EXEC = main
 all: $(SRC)
 	@echo "Build using Meson"
 	@meson compile -C builddir
+	@cp builddir/main main
 
 .PHONY: setup
 setup: $(SRC)
 	@echo "Create Meson Project"
 	@meson setup builddir
-	@cp builddir/main main
 
 .PHONY: run
 run: main
